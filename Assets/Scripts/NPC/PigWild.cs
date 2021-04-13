@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pig : Weak
+public class PigWild : Strong
 {
-
     protected override void Update()
     {
         base.Update();
-        if(theViewAngle.View() && !isDead)
+        if (theViewAngle.View() && !isDead && !isAttacking)
         {
-            Run(theViewAngle.GetTargetPos());
+            StopAllCoroutines();
+            StartCoroutine(ChaseTargetCoroutine());
         }
     }
 
@@ -22,7 +22,6 @@ public class Pig : Weak
 
     private void RandomAction()
     {
-        RandomSound();
 
         int _random = Random.Range(0, 4); // 대기, 풀뜯기, 두리번, 걷기
 

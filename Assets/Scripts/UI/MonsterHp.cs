@@ -15,7 +15,7 @@ public class MonsterHp : MonoBehaviour
     {
         m_cam = Camera.main; //UI 확인을 위한 카메라
 
-        GameObject[] t_objects = GameObject.FindGameObjectsWithTag("NPC"); // NPC 태그의 오브젝트들에게 적용
+        GameObject[] t_objects = GameObject.FindGameObjectsWithTag("WeakCr"); // NPC 태그의 오브젝트들에게 적용
         for(int i = 0; i < t_objects.Length; i++)
         {
             m_objectList.Add(t_objects[i].transform);

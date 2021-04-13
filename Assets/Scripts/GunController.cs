@@ -96,11 +96,14 @@ public class GunController : MonoBehaviour
         PlaySE(currentGun.fire_Sound);
         currentGun.muzzleFlash.Play();
         Hit();
-        if (hitInfo.transform.tag == "NPC")
+        if (hitInfo.transform.tag == "WeakCr")
         {
-            hitInfo.transform.GetComponent<Pig>().Damage(1, transform.position);
+            hitInfo.transform.GetComponent<Weak>().Damage(1, transform.position);
             monsterHp1.DecreaseHP(1);
-
+        }
+        else if(hitInfo.transform.tag == "Danger")
+        {
+            hitInfo.transform.GetComponent<Weak>().Damage(1, transform.position);
         }
         StopAllCoroutines();
         StartCoroutine(RetroActionCoroutine());

@@ -96,6 +96,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public bool GetRun()
+
+    {
+
+        return isRun;
+
+    }
     private void Crouch() // 앉기 동작
     {
         isCrouch = !isCrouch;
