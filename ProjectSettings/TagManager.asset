@@ -6,6 +6,9 @@ TagManager:
   tags:
   - WeakCr
   - Danger
+  - NPC
+  - Coin
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -19,7 +22,7 @@ TagManager:
   - Weapon
   - 
   - Player
-  - 
+  - Item
   - 
   - 
   - 

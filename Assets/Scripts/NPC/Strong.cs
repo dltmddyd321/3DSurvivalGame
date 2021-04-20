@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Strong : Animal
 {
@@ -11,6 +12,8 @@ public class Strong : Animal
     protected float attackDelay; // 공격 딜레이
     [SerializeField]
     protected LayerMask targetMask;
+
+    public GameObject Blood;
 
     [SerializeField]
     protected float ChaseTime;
@@ -71,15 +74,20 @@ public class Strong : Animal
         RaycastHit _hit;
         if (Physics.Raycast(transform.position + Vector3.up, transform.forward, out _hit, 3, targetMask))
         {
+            Blood.gameObject.SetActive(true);
             thePlayerStatus.DecreaseHP(attackDamage);
             Debug.Log("플레이어 적중!!");
+            
         }
         else
         {
+            
             Debug.Log("회피!!");
         }
         yield return new WaitForSeconds(attackDelay);
+        Blood.gameObject.SetActive(false);
         isAttacking = false;
         StartCoroutine(ChaseTargetCoroutine());
     }
+
 }
