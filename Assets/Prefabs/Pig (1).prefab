@@ -700,6 +700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: {fileID: 5100011074205401991}
   Coin: {fileID: 1498403948531744, guid: fa2c57d3f28a5e6419393e8bc3eeb32a, type: 3}
+  Potion: {fileID: 1147225943524148747, guid: 56601b472e619d54aa1619014b596f83, type: 3}
   animalName: Pig
   hp: 8
   walkSpeed: 1

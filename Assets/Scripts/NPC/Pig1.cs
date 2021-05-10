@@ -7,6 +7,7 @@ public class Pig1 : MonoBehaviour
 {
     [SerializeField] public GameObject HP;
     [SerializeField] GameObject Coin;
+    [SerializeField] GameObject Potion;
     [SerializeField] private string animalName; // 동물이름
     [SerializeField] public float hp; // 동물의 체력
     private float Maxhp = 8;
@@ -169,13 +170,20 @@ public class Pig1 : MonoBehaviour
         isDead = true;
         anim.SetTrigger("Dead");
         Destroy(gameObject, 3f); // 3초후 오브젝트 삭제
-        Invoke("DropCoin", 2);  // 2초 딜레이후 DropCoin 함수 실행
+        Invoke("DropCoin", 1f);  // 1초 딜레이후 DropCoin 함수 실행
+        Invoke("DropPotion", 2f); // 2초 딜레이후 DropPotion 함수 실행
     }
 
     private void DropCoin()
     {
         Coin = (GameObject)Instantiate(Coin);
         Coin.transform.position = this.transform.position + new Vector3(0, 0.3f, 0);
+    }
+
+    private void DropPotion()
+    {
+        Potion = (GameObject)Instantiate(Potion);
+        Potion.transform.position = this.transform.position + new Vector3(1f, 0, 0);
     }
 
     private void RandomSound()

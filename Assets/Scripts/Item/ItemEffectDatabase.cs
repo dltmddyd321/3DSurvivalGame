@@ -16,36 +16,25 @@ public class ItemEffectDatabase : MonoBehaviour
 
     // 필요한 컴포넌트
     [SerializeField]
-    private StatusController thePlayerStatus;
+    private StatusHP thePlayerStatus;
 
     private const string HP = "HP", SP = "SP", DP = "DP", HUNGRY = "HUNGRTY",
-        THIRSTY = "THIRSTY", SATISFY = "SATISFY"; 
+        THIRSTY = "THIRSTY", SATISFY = "SATISFY";
 
     public void UseItem(Item _item)
     {
-        if(_item.itemType == Item.ItemType.Used)
+        if (_item.itemType == Item.ItemType.Used)
         {
             for (int i = 0; i < itemEffects.Length; i++)
             {
-                if(itemEffects[i].ItemName == _item.itemName)
+                if (itemEffects[i].ItemName == _item.itemName)
                 {
-                    for(int j=0; j < itemEffects[i].part.Length; j++)
+                    for (int j = 0; j < itemEffects[i].part.Length; j++)
                     {
                         switch (itemEffects[i].part[j])
                         {
-                            case HP :
+                            case HP:
                                 thePlayerStatus.IncreaseHP(itemEffects[i].num[j]);
-                                break; 
-                            case DP:
-                                thePlayerStatus.IncreaseDP(itemEffects[i].num[j]);
-                                break;
-                            case THIRSTY:
-                                thePlayerStatus.IncreaseThirsty(itemEffects[i].num[j]);
-                                break;
-                            case HUNGRY:
-                                thePlayerStatus.IncreaseHungry(itemEffects[i].num[j]);
-                                break;
-                            case SATISFY:
                                 break;
                             default:
                                 Debug.Log("잘못된 Status 부위 : HP, SP, DP, HUNGRTY, THIRSTY, SATISFY만 가능");

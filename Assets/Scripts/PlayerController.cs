@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    int coinCount = 0; // 코인 개수
+    public TalkManager manager;
+
     // 스피드 조정 변수
     [SerializeField]
     private float walkSpeed;
@@ -53,7 +57,9 @@ public class PlayerController : MonoBehaviour
     private StatusController thestatusController;
     private StatusSP theStatusSP;
 
-
+    public Text count;
+    private AudioSource theAudio;
+    [SerializeField] private AudioClip gainCoin;
 
 
     // Start is called before the first frame update
@@ -65,6 +71,7 @@ public class PlayerController : MonoBehaviour
         theCrosshair = FindObjectOfType<Crosshair>();
         thestatusController = FindObjectOfType<StatusController>();
         theStatusSP = FindObjectOfType<StatusSP>();
+        theAudio = GetComponent<AudioSource>();
 
         // 초기화
         applySpeed = walkSpeed;
@@ -144,7 +151,7 @@ public class PlayerController : MonoBehaviour
     private void IsGround() // 지면 체크
     {
         isGround = Physics.Raycast(transform.position, Vector3.down, capsuleCollider.bounds.extents.y + 0.1f);
-        theCrosshair.RunningAnimation(!isGround);
+        theCrosshair.JumpAnimation(!isGround);
     }
 
     private void TryJump() // 점프 시도
@@ -200,8 +207,8 @@ public class PlayerController : MonoBehaviour
     private void Move() // 움직임 실행
     {
 
-        float _moveDirX = Input.GetAxisRaw("Horizontal");
-        float _moveDirZ = Input.GetAxisRaw("Vertical");
+        float _moveDirX = manager.isAction ? 0:Input.GetAxisRaw("Horizontal");
+        float _moveDirZ = manager.isAction ? 0 :Input.GetAxisRaw("Vertical");
 
         Vector3 _moveHorizontal = transform.right * _moveDirX;
         Vector3 _moveVertical = transform.forward * _moveDirZ;
@@ -229,7 +236,7 @@ public class PlayerController : MonoBehaviour
     private void CharacterRotation() //좌우 캐릭터 회전
     { 
 
-        float _yRotation = Input.GetAxisRaw("Mouse X");
+        float _yRotation = manager.isAction ? 0 : Input.GetAxisRaw("Mouse X");
         Vector3 _characterRotationY = new Vector3(0f, _yRotation, 0f) * lookSensitivity;
         myRigid.MoveRotation(myRigid.rotation * Quaternion.Euler(_characterRotationY));
     }
@@ -237,12 +244,28 @@ public class PlayerController : MonoBehaviour
     private void CameraRotation() // 상하 카메라 회전
     { 
 
-        float _xRotation = Input.GetAxisRaw("Mouse Y");
+        float _xRotation = manager.isAction ? 0 : Input.GetAxisRaw("Mouse Y");
         float _cameraRotationX = _xRotation * lookSensitivity;
         currentCameraRotationX -= _cameraRotationX;
         currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -cameraRotationLimit, cameraRotationLimit);
 
         theCamera.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
     }
+    public void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.CompareTag("Coin"))
+        {
+            PlaySE(gainCoin);
+            coinCount++;
+            count.text = "Coin x " + coinCount.ToString();
+        }
+    }
+
+    private void PlaySE(AudioClip _clip)
+    {
+        theAudio.clip = _clip;
+        theAudio.Play();
+    }
+
 
 }

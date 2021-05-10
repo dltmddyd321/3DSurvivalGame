@@ -21,6 +21,13 @@ public class Actioncontroller : MonoBehaviour
     [SerializeField]
     private Inventory theInventory;
 
+    private AudioSource theAudio;
+    [SerializeField] private AudioClip gainItem;
+
+    private void Start()
+    {
+        theAudio = GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -47,6 +54,7 @@ public class Actioncontroller : MonoBehaviour
                 Debug.Log(hitInfo.transform.GetComponent<ItemPickUp>().item.itemName + " 획득했습니다. ");
                 theInventory.AcquireItem(hitInfo.transform.GetComponent<ItemPickUp>().item);
                 Destroy(hitInfo.transform.gameObject);
+                PlaySE(gainItem);
                 InfoDisappear();
                 
             }
@@ -77,5 +85,11 @@ public class Actioncontroller : MonoBehaviour
     {
         pickupActivated = false;
         actionText.gameObject.SetActive(false);
+    }
+
+    private void PlaySE(AudioClip _clip)
+    {
+        theAudio.clip = _clip;
+        theAudio.Play();
     }
 }

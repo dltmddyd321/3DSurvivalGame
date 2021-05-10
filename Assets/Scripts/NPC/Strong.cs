@@ -30,6 +30,12 @@ public class Strong : Animal
         isRunning = true;
         anim.SetBool("Running", isRunning);
         nav.SetDestination(destination);
+        if(hp <=0)
+        {
+            isChasing = false;
+            isRunning = false;
+            nav.speed = 0;
+        }
     }
 
     public override void Damage(int _dmg, Vector3 _targetPos)

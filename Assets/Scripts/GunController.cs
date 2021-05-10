@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
+    public static bool isActive = true;
+
     // 현재 장착된 총
     [SerializeField]
     private Gun currentGun;
@@ -50,18 +52,25 @@ public class GunController : MonoBehaviour
         thestatusHP = FindObjectOfType<StatusHP>();
         monsterHp1 = FindObjectOfType<MonsterHp1>();
         thepig1 = FindObjectOfType<Pig1>();
+
+        WeaponManager.currentWeapon = currentGun.GetComponent<Transform>();
+        WeaponManager.currentWeaponAnim = currentGun.anim;
     }
 
     // Update is called once per frame
     void Update()
     {
-        GunFireRateCalc();
-        if (!Inventory.inventoryActivated)
+        if(isActive)
         {
-            TryFire();
-            TryReload();
-            TryFineSight();
+            GunFireRateCalc();
+            if (!Inventory.inventoryActivated)
+            {
+                TryFire();
+                TryReload();
+                TryFineSight();
+            }
         }
+       
 
     }
 
@@ -108,7 +117,7 @@ public class GunController : MonoBehaviour
         }
         else if(hitInfo.transform.tag == "Danger")
         {
-            hitInfo.transform.GetComponent<Weak>().Damage(1, transform.position);
+            hitInfo.transform.GetComponent<Strong>().Damage(1, transform.position);
         }
         else if (hitInfo.transform.tag == "NPC")
         {
@@ -267,7 +276,14 @@ public class GunController : MonoBehaviour
         }
     }
 
-
+    public void CancelReload()//다른 행동 시 재장전에 걸리는 오류 해결
+    {
+        if(isReload)
+        {
+            StopAllCoroutines();
+            isReload = false;
+        }
+    }
 
     private void PlaySE(AudioClip _clip) // 사운드 재생
     {
@@ -283,5 +299,21 @@ public class GunController : MonoBehaviour
     public bool getFineSightMode()
     {
         return isFineSightMode;
+    }
+
+    public void GunChange(Gun _gun)
+    {
+        if (WeaponManager.currentWeapon != null)
+            WeaponManager.currentWeapon.gameObject.SetActive(false);
+        // 기본 상태가 총이 아닌 맨손 상태가 된다.
+
+        currentGun = _gun;
+        WeaponManager.currentWeapon = currentGun.GetComponent<Transform>();
+        WeaponManager.currentWeaponAnim = currentGun.anim; 
+        // 웨폰매니저에서 자동으로 애니메이션을 받아온다.
+
+        currentGun.transform.localPosition = Vector3.zero;
+        currentGun.gameObject.SetActive(true);
+        isActive = true;
     }
 }

@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Animal : MonoBehaviour
 {
     protected StatusHP thePlayerStatus;
+    [SerializeField] public GameObject HP;
     [SerializeField] protected string animalName; // 동물이름
     [SerializeField] protected int hp; // 동물의 체력
-
+    private float maxhp = 8;
     [SerializeField] protected float walkSpeed; // 걷기속도
     [SerializeField] protected float runSpeed; // 뛰기속도
 
@@ -93,7 +95,6 @@ public class Animal : MonoBehaviour
         anim.SetBool("Walking", isWalking);
         currentTime = walkTime;
         nav.speed = walkSpeed;
-        Debug.Log("걷기");
     }
 
    
@@ -103,25 +104,26 @@ public class Animal : MonoBehaviour
         if (!isDead)
         {
             hp -= _dmg;
+            HP.GetComponent<Slider>().value = hp / maxhp;
 
             if (hp <= 0)
             {
+                hp = 0;
                 Dead();
                 return;
             }
 
-            PlaySE(sound_Hurt);
             anim.SetTrigger("Hurt");
         }
     }
 
     protected void Dead()
     {
-        PlaySE(sound_Dead);
         isWalking = false;
         isRunning = false;
         isDead = true;
         anim.SetTrigger("Dead");
+        Destroy(gameObject, 1f);
     }
 
     protected void RandomSound()
