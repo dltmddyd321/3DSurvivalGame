@@ -82,6 +82,7 @@ public class Strong : Animal
         {
             Blood.gameObject.SetActive(true);
             thePlayerStatus.DecreaseHP(attackDamage);
+            Invoke("OffBlood", 2f);
             Debug.Log("플레이어 적중!!");
             
         }
@@ -91,9 +92,13 @@ public class Strong : Animal
             Debug.Log("회피!!");
         }
         yield return new WaitForSeconds(attackDelay);
-        Blood.gameObject.SetActive(false);
         isAttacking = false;
         StartCoroutine(ChaseTargetCoroutine());
+    }
+
+    public void OffBlood()
+    {
+        Blood.gameObject.SetActive(false);
     }
 
 }

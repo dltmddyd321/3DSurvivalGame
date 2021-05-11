@@ -21,13 +21,22 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         PlayRandomBGM();
+        
     }
 
     public void PlayRandomBGM()
     {
         int random = Random.Range(0, 1);
         bgmPlayer.clip = bgmSounds[random].clip;
-        bgmPlayer.Play();
+        
+        if (FadeSystem.isFade == true)
+        {
+            bgmPlayer.Stop();
+
+        }
+        else
+            bgmPlayer.Play();
+
     }
 
 }

@@ -12,7 +12,7 @@ public class StatusHP : MonoBehaviour
     //체력
     [SerializeField]
     private int hp;
-    private int currentHP;
+    public static int currentHP;
 
 
     private const int HP = 0;
@@ -53,7 +53,10 @@ public class StatusHP : MonoBehaviour
         }
 
         if(currentHP <= 0)
+        {
             currentHP = 0;
+        }
+            
     }
 
 

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    int coinCount = 0; // 코인 개수
+    public static int coinCount = 0; // 코인 개수
     public TalkManager manager;
 
     // 스피드 조정 변수
