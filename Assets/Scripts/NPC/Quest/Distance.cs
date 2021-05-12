@@ -19,7 +19,7 @@ public class Distance : MonoBehaviour
     void Update()
     {
         Distance_ = Vector3.Distance(NPC.transform.position, Player.transform.position); // NPC와 플레이어 사이의 거리
-        if (Distance_ < 3) //거리는 너가 임의로 설정하면됨  
+        if (Distance_ < 3) //거리는 임의로 설정하면됨  
         {
             Sprite.SetActive(true);
             Holder.gameObject.SetActive(false);
