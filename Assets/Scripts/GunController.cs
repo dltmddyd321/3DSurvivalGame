@@ -20,6 +20,8 @@ public class GunController : MonoBehaviour
 
     public bool isEnemy = false;
 
+    public static bool isShot;
+
     // 본래 포지션 값
     private Vector3 originPos;
 
@@ -84,7 +86,10 @@ public class GunController : MonoBehaviour
     {
         if (Input.GetButton("Fire1") && currentFireRate <= 0 && !isReload)
         {
-            Fire();
+            isShot = true;
+            if(isShot == true)
+                Fire();
+
         }
     }
 

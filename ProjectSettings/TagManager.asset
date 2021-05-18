@@ -9,6 +9,7 @@ TagManager:
   - NPC
   - Coin
   - Item
+  - Note
   layers:
   - Default
   - TransparentFX
@@ -26,7 +27,7 @@ TagManager:
   - 
   - NPC
   - Floor
-  - 
+  - Note
   - 
   - 
   - 
