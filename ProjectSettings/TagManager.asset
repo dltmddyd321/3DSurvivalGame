@@ -10,6 +10,8 @@ TagManager:
   - Coin
   - Item
   - Note
+  - Boss
+  - BossBullet
   layers:
   - Default
   - TransparentFX
@@ -19,9 +21,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Boss
   - Weapon
-  - 
+  - BossBullet
   - Player
   - Item
   - 
