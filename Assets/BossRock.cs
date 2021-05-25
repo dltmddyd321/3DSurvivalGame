@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class BossRock : MonoBehaviour
 {
-    public int damage; // 바위 데미지
-    public bool isMelee; // 바위 데미지 범위
-    Rigidbody rigid; // 물리 효과 구현
+    public int damage;
+    public bool isMelee;
+    Rigidbody rigid;
 
     // 회전 파워, 크기
     float angularPower = 2;
     float scaleValue = 0.1f;
 
-    bool isShoot; // 생성되었는지 아닌지
+    bool isShoot;
 
     void Awake()
     {
@@ -33,11 +33,9 @@ public class BossRock : MonoBehaviour
         while (!isShoot)
         {
             angularPower += 0.02f;
-            scaleValue += 0.005f; 
-            transform.localScale = Vector3.one * scaleValue; 
-            // 바위가 점점 커지는 것과 동시에 전방으로 굴러온다.
+            scaleValue += 0.005f;
+            transform.localScale = Vector3.one * scaleValue;
             rigid.AddTorque(transform.right * angularPower, ForceMode.Acceleration);
-            // 바위의 RigidBody에 힘을 생성하여 Vector로 방향을 설정하여 전방에 힘을 가한다.
             yield return null;
         }
     }

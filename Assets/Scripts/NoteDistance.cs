@@ -17,10 +17,10 @@ public class NoteDistance : MonoBehaviour
     {
         RaycastHit hitInfo;
         if (Physics.Raycast(this.transform.position, this.transform.forward, out hitInfo, 3f, LayerMask.GetMask("Note")))
-        { //플레이어로부터 발사된 레이저의 3f 거리내에 쪽지 오브젝트가 감지된다면 쪽지에 대한 클릭 메시지가 팝업된다.
+        {
             NoteInfo.gameObject.SetActive(true);
             if (Input.GetKeyDown(KeyCode.T))
-            { //키보드 T 버튼으로 쪽지의 내용을 볼 수 있다.
+            {
                 Note.gameObject.SetActive(true);
                 NoteBtn.gameObject.SetActive(true);
                 NoteText.gameObject.SetActive(true);
