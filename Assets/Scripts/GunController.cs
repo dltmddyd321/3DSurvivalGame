@@ -128,6 +128,10 @@ public class GunController : MonoBehaviour
         {
             hitInfo.transform.GetComponent<Pig1>().Damage(1, transform.position);
         }
+        else if (hitInfo.transform.tag == "Boss")
+        {
+            hitInfo.transform.GetComponent<BossBasic>().Damage(1, transform.position);
+        }
         StopAllCoroutines();
         StartCoroutine(RetroActionCoroutine());
     }
