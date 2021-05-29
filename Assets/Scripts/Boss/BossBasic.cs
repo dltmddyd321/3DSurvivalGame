@@ -15,6 +15,7 @@ public class BossBasic : MonoBehaviour
     [SerializeField] protected float runSpeed; // 뛰기속도
 
     protected Vector3 destination; // 방향
+    public GameObject Endoor;
 
     // 상태변수
     protected bool isAction; // 행동중인지 아닌지 판별
@@ -110,6 +111,7 @@ public class BossBasic : MonoBehaviour
             {
                 hp = 0;
                 Dead();
+                Instantiate(Endoor, boxCol.transform.position , Quaternion.identity);
                 return;
             }
 

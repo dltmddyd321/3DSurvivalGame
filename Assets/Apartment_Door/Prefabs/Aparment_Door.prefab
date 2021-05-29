@@ -492,7 +492,7 @@ GameObject:
   - component: {fileID: 111727103889308754}
   - component: {fileID: 205746683859549308}
   - component: {fileID: 65047746808465334}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Aparment_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -508,7 +508,7 @@ Transform:
   m_GameObject: {fileID: 1611523936073156}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.33, y: 0, z: -4.58}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.4667, y: 1.913156, z: 1}
   m_Children:
   - {fileID: 4177487325788202}
   - {fileID: 4675683796227696}

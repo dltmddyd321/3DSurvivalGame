@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class Boss : RealBoss
 {
+
+    
+
     protected override void Update()
     {
         base.Update();
