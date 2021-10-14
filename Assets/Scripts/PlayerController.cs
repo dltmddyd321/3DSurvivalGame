@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     // 상태 변수
     private bool isWalk = false;
     private bool isRun = false;
+    public static bool isshoot = true;
     private bool isCrouch = false;
     private bool isGround = true;
 
@@ -95,7 +96,7 @@ public class PlayerController : MonoBehaviour
         {
             CameraRotation();
             CharacterRotation();
-        }      
+        }
     }
 
     private void TryCrouch() // 앉기 시도
@@ -109,9 +110,12 @@ public class PlayerController : MonoBehaviour
     public bool GetRun()
 
     {
-
         return isRun;
+    }
+    public bool Getshoot()
 
+    {
+        return isshoot;
     }
     private void Crouch() // 앉기 동작
     {
@@ -171,13 +175,13 @@ public class PlayerController : MonoBehaviour
         myRigid.velocity = transform.up * jumpForce;
     }
 
-     void TryRun() // 달리기 시도
+    void TryRun() // 달리기 시도
     {
-        if (Input.GetKey(KeyCode.LeftShift) &&  theStatusSP.GetCurrentSP() > 0)
+        if (Input.GetKey(KeyCode.LeftShift) && theStatusSP.GetCurrentSP() > 0)
         {
             Running();
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift) ||  theStatusSP.GetCurrentSP() <= 0)
+        if (Input.GetKeyUp(KeyCode.LeftShift) || theStatusSP.GetCurrentSP() <= 0)
         {
             RunningCancel();
         }
@@ -188,11 +192,10 @@ public class PlayerController : MonoBehaviour
         // 앉은 상태에서 점프 시 점프 해제
         if (isCrouch)
             Crouch();
-
         theGunController.CancelFineSight();
-
         isRun = true;
         theCrosshair.RunningAnimation(isRun);
+        isshoot = false;
         theStatusSP.DecreaseStamina(10);
         applySpeed = runSpeed;
     }
@@ -201,14 +204,15 @@ public class PlayerController : MonoBehaviour
     {
         isRun = false;
         theCrosshair.RunningAnimation(isRun);
+        isshoot = true;
         applySpeed = walkSpeed;
     }
 
     private void Move() // 움직임 실행
     {
 
-        float _moveDirX = manager.isAction ? 0:Input.GetAxisRaw("Horizontal");
-        float _moveDirZ = manager.isAction ? 0 :Input.GetAxisRaw("Vertical");
+        float _moveDirX = manager.isAction ? 0 : Input.GetAxisRaw("Horizontal");
+        float _moveDirZ = manager.isAction ? 0 : Input.GetAxisRaw("Vertical");
 
         Vector3 _moveHorizontal = transform.right * _moveDirX;
         Vector3 _moveVertical = transform.forward * _moveDirZ;
@@ -230,11 +234,11 @@ public class PlayerController : MonoBehaviour
             theCrosshair.WalkingAnimation(isWalk);
             lastPos = transform.position;
         }
-        
+
     }
 
     private void CharacterRotation() //좌우 캐릭터 회전
-    { 
+    {
 
         float _yRotation = manager.isAction ? 0 : Input.GetAxisRaw("Mouse X");
         Vector3 _characterRotationY = new Vector3(0f, _yRotation, 0f) * lookSensitivity;
@@ -242,7 +246,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void CameraRotation() // 상하 카메라 회전
-    { 
+    {
 
         float _xRotation = manager.isAction ? 0 : Input.GetAxisRaw("Mouse Y");
         float _cameraRotationX = _xRotation * lookSensitivity;

@@ -22,6 +22,7 @@ public class BossPlayer : MonoBehaviour
     // 상태 변수
     private bool isWalk = false;
     private bool isRun = false;
+    public static bool isshoot = true;
     private bool isCrouch = false;
     private bool isGround = true;
 
@@ -106,6 +107,11 @@ public class BossPlayer : MonoBehaviour
         return isRun;
 
     }
+    public bool Getshoot()
+
+    {
+        return isshoot;
+    }
     private void Crouch() // 앉기 동작
     {
         isCrouch = !isCrouch;
@@ -181,11 +187,10 @@ public class BossPlayer : MonoBehaviour
         // 앉은 상태에서 점프 시 점프 해제
         if (isCrouch)
             Crouch();
-
         theGunController.CancelFineSight();
-
         isRun = true;
         theCrosshair.RunningAnimation(isRun);
+        isshoot = false;
         theStatusSP.DecreaseStamina(10);
         applySpeed = runSpeed;
     }
@@ -194,6 +199,7 @@ public class BossPlayer : MonoBehaviour
     {
         isRun = false;
         theCrosshair.RunningAnimation(isRun);
+        isshoot = true;
         applySpeed = walkSpeed;
     }
 

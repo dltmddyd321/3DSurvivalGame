@@ -28,25 +28,27 @@ public class TalkManager : MonoBehaviour
         scanNpc = scanObj;
         objData objData = scanNpc.GetComponent<objData>();
         Talk(objData.id, objData.isNpc);
-        talkPanel.SetActive(isAction);   
+        talkPanel.SetActive(isAction);
     }
 
     void Talk(int id, bool isNpc) // 대화 중
     {
         int questTalkIndex = Qmanager.GetQuestTalkIndex(id); //호출할 퀘스트값 저장
-        string talkData = npcManager.GetTalk(id+ questTalkIndex, talkIndex); //호출할 대화 내용 저장
+        string talkData = npcManager.GetTalk(id + questTalkIndex, talkIndex); //호출할 대화 내용 저장
 
-        if(talkData == null) //대화가 끝났다면
+        if (talkData == null) //대화가 끝났다면
         {
             isAction = false;
             talkIndex = 0;
             questBar.gameObject.SetActive(true);
-            if (RayZ.cnt >=5 && RayZ.cnt <=8)
+            Qmanager.CheckQuest(id);
+            if (RayZ.cnt >= 5 && RayZ.cnt <= 8)
             {
                 PlaySE(questSound);
-                questText.text = "코인 2개 수집!";
+                questText.text = "Main Quest";
+                questText.text = "코인 2개 수집하시오";
             }
-            else if (RayZ.cnt >= 9 && PlayerController.coinCount >=2)
+            else if (RayZ.cnt >= 9 && PlayerController.coinCount >= 2)
             {
                 PlaySE(questSound);
                 questText.text = "쪽지를 찾아 떠나라!";

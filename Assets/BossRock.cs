@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BossRock : MonoBehaviour
 {
+    protected StatusHP thePlayerStatus;
     public int damage;
     public bool isMelee;
     Rigidbody rigid;
@@ -21,6 +23,12 @@ public class BossRock : MonoBehaviour
         StartCoroutine(GainPower());
     }
 
+    private void Start()
+    {
+        thePlayerStatus = FindObjectOfType<StatusHP>();
+    }
+
+
     // 쏘는 타이밍 관리
     IEnumerator GainPowerTimer()
     {
@@ -32,10 +40,11 @@ public class BossRock : MonoBehaviour
     {
         while (!isShoot)
         {
-            angularPower += 0.02f;
-            scaleValue += 0.005f;
+            angularPower += 0.04f;
+            scaleValue += 0.002f;
             transform.localScale = Vector3.one * scaleValue;
             rigid.AddTorque(transform.right * angularPower, ForceMode.Acceleration);
+            Destroy(gameObject, 3.5f);
             yield return null;
         }
     }
@@ -44,8 +53,8 @@ public class BossRock : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
+            thePlayerStatus.DecreaseHP(damage);
             Destroy(gameObject);
         }
     }
-
 }

@@ -46,53 +46,59 @@ public class RealBoss : BossBasic
 
     protected IEnumerator ChaseTargetCoroutine()
     {
-        currentChaseTime = 0;
-
-        while (currentChaseTime < ChaseTime)
+        if (isDead == false)
         {
-            Chase(theViewAngle.GetTargetPos()); //충분히 가까이 있고
-            if (Vector3.Distance(transform.position, theViewAngle.GetTargetPos()) <= 3f)
-            {
-                if (theViewAngle.View()) //바로 눈 앞에 있을 경우
-                {
-                    Debug.Log("공격 시도!");
-                    StartCoroutine(AttackCoroutine());
-                }
-            }
-            yield return new WaitForSeconds(ChaseDelayTime);
-            currentChaseTime += ChaseDelayTime;
-        }
+            currentChaseTime = 0;
 
-        isChasing = false;
-        nav.ResetPath();
+            while (currentChaseTime < ChaseTime)
+            {
+                Chase(theViewAngle.GetTargetPos()); //충분히 가까이 있고
+                if (Vector3.Distance(transform.position, theViewAngle.GetTargetPos()) <= 3f)
+                {
+                    if (theViewAngle.View()) //바로 눈 앞에 있을 경우
+                    {
+                        Debug.Log("공격 시도!");
+                        StartCoroutine(AttackCoroutine());
+                    }
+                }
+                yield return new WaitForSeconds(ChaseDelayTime);
+                currentChaseTime += ChaseDelayTime;
+            }
+
+            isChasing = false;
+            nav.ResetPath();
+        }
     }
 
     protected IEnumerator AttackCoroutine()
     {
-        isAttacking = true;
-        nav.ResetPath();
-        currentChaseTime = ChaseTime;
-        yield return new WaitForSeconds(0.5f);
-        transform.LookAt(theViewAngle.GetTargetPos()); // 플레이어를 바라보게 만든다.
-        anim.SetTrigger("Attack");
-        yield return new WaitForSeconds(0.5f);
-        RaycastHit _hit;
-        if (Physics.Raycast(transform.position + Vector3.up, transform.forward, out _hit, 3, targetMask))
+        if (isDead == false)
         {
-            Blood.gameObject.SetActive(true);
-            thePlayerStatus.DecreaseHP(attackDamage);
-            Invoke("OffBlood", 2f);
-            Debug.Log("플레이어 적중!!");
+            isAttacking = true;
+            nav.ResetPath();
+            currentChaseTime = ChaseTime;
+            yield return new WaitForSeconds(0.5f);
+            transform.LookAt(theViewAngle.GetTargetPos()); // 플레이어를 바라보게 만든다.
+            anim.SetTrigger("Attack");
+            yield return new WaitForSeconds(0.5f);
+            RaycastHit _hit;
+            if (Physics.Raycast(transform.position + Vector3.up, transform.forward, out _hit, 3, targetMask))
+            {
+                Blood.gameObject.SetActive(true);
+                thePlayerStatus.DecreaseHP(attackDamage);
+                Invoke("OffBlood", 2f);
+                Debug.Log("플레이어 적중!!");
 
-        }
-        else
-        {
+            }
+            else
+            {
 
-            Debug.Log("회피!!");
+                Debug.Log("회피!!");
+            }
+            yield return new WaitForSeconds(attackDelay);
+            isAttacking = false;
+            StartCoroutine(ChaseTargetCoroutine());
         }
-        yield return new WaitForSeconds(attackDelay);
-        isAttacking = false;
-        StartCoroutine(ChaseTargetCoroutine());
     }
 
     public void OffBlood()

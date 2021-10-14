@@ -23,7 +23,7 @@ public class BossBasic : MonoBehaviour
     protected bool isRunning; // 뛰는지 판별
     protected bool isChasing; // 추격중인지 판별
     protected bool isAttacking; // 공격중인지 판별
-    protected bool isDead; // 죽었는지 판별
+    public bool isDead; // 죽었는지 판별
 
     [SerializeField] protected float walkTime; // 걷기 시간
     [SerializeField] protected float waitTime; // 대기 시간
@@ -125,7 +125,8 @@ public class BossBasic : MonoBehaviour
         isRunning = false;
         isDead = true;
         anim.SetTrigger("Dead");
-        Destroy(gameObject, 1f);
+        StopAllCoroutines();
+        
     }
 
     protected void RandomSound()

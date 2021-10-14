@@ -14,6 +14,8 @@ public class Distance : MonoBehaviour
     [SerializeField] public GameObject Holder;// 플레이어 손
     [SerializeField] public GameObject HUD;// 허드
     [SerializeField] public GameObject Sprite;
+    [SerializeField] public GameObject NPCHi;
+    [SerializeField] public GameObject Quick;
 
 
     void Update()
@@ -26,6 +28,8 @@ public class Distance : MonoBehaviour
             WeaponCamera.gameObject.SetActive(false);
             Crosshair.gameObject.SetActive(false);
             HUD.gameObject.SetActive(false);
+            NPCHi.gameObject.SetActive(true);
+            Quick.gameObject.SetActive(false);
         }
         else
         {
@@ -34,6 +38,8 @@ public class Distance : MonoBehaviour
             WeaponCamera.gameObject.SetActive(true);
             Crosshair.gameObject.SetActive(true);
             HUD.gameObject.SetActive(true);
+            NPCHi.gameObject.SetActive(false);
+            Quick.gameObject.SetActive(true);
         }
     }
 }

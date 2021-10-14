@@ -22,6 +22,7 @@ public class GunController : MonoBehaviour
 
     public static bool isShot;
 
+
     // 본래 포지션 값
     private Vector3 originPos;
 
@@ -62,7 +63,7 @@ public class GunController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isActive)
+        if (isActive)
         {
             GunFireRateCalc();
             if (!Inventory.inventoryActivated)
@@ -72,7 +73,6 @@ public class GunController : MonoBehaviour
                 TryFineSight();
             }
         }
-       
 
     }
 
@@ -87,7 +87,7 @@ public class GunController : MonoBehaviour
         if (Input.GetButton("Fire1") && currentFireRate <= 0 && !isReload)
         {
             isShot = true;
-            if(isShot == true)
+            if (isShot == true)
                 Fire();
 
         }
@@ -109,31 +109,35 @@ public class GunController : MonoBehaviour
 
     private void Shoot() // 발사 후 계산
     {
-        theCrosshair.FireAnimation();
-        currentGun.currentBulletCount--;
-        currentFireRate = currentGun.fireRate; // 연사 속도 재계산
-        PlaySE(currentGun.fire_Sound);
-        currentGun.muzzleFlash.Play();
-        Hit();
-        if (hitInfo.transform.tag == "WeakCr")
+        if (BossPlayer.isshoot == true && PlayerController.isshoot == true)
         {
-            hitInfo.transform.GetComponent<Weak>().Damage(1, transform.position);
-            monsterHp1.DecreaseHP(1);
+
+            theCrosshair.FireAnimation();
+            currentGun.currentBulletCount--;
+            currentFireRate = currentGun.fireRate; // 연사 속도 재계산
+            PlaySE(currentGun.fire_Sound);
+            currentGun.muzzleFlash.Play();
+            Hit();
+            if (hitInfo.transform.tag == "WeakCr")
+            {
+                hitInfo.transform.GetComponent<Weak>().Damage(1, transform.position);
+                monsterHp1.DecreaseHP(1);
+            }
+            else if (hitInfo.transform.tag == "Danger")
+            {
+                hitInfo.transform.GetComponent<Strong>().Damage(1, transform.position);
+            }
+            else if (hitInfo.transform.tag == "NPC")
+            {
+                hitInfo.transform.GetComponent<Pig1>().Damage(1, transform.position);
+            }
+            else if (hitInfo.transform.tag == "Boss")
+            {
+                hitInfo.transform.GetComponent<BossBasic>().Damage(1, transform.position);
+            }
+            StopAllCoroutines();
+            StartCoroutine(RetroActionCoroutine());
         }
-        else if(hitInfo.transform.tag == "Danger")
-        {
-            hitInfo.transform.GetComponent<Strong>().Damage(1, transform.position);
-        }
-        else if (hitInfo.transform.tag == "NPC")
-        {
-            hitInfo.transform.GetComponent<Pig1>().Damage(1, transform.position);
-        }
-        else if (hitInfo.transform.tag == "Boss")
-        {
-            hitInfo.transform.GetComponent<BossBasic>().Damage(1, transform.position);
-        }
-        StopAllCoroutines();
-        StartCoroutine(RetroActionCoroutine());
     }
 
     private void Hit()
@@ -147,12 +151,12 @@ public class GunController : MonoBehaviour
             GameObject clone = Instantiate(hit_effect_prefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
             Destroy(clone, 2f);
         }
-        
+
     }
 
     private void TryReload() // 재장전 시도
     {
-        if(Input.GetKeyDown(KeyCode.R) && !isReload && currentGun.currentBulletCount < currentGun.reloadBulletCount)
+        if (Input.GetKeyDown(KeyCode.R) && !isReload && currentGun.currentBulletCount < currentGun.reloadBulletCount)
         {
             CancelFineSight();
             StartCoroutine(ReloadCoroutine());
@@ -160,8 +164,8 @@ public class GunController : MonoBehaviour
     }
 
     IEnumerator ReloadCoroutine() // 재장전
-    { 
-        if(currentGun.carryBulletCount > 0) 
+    {
+        if (currentGun.carryBulletCount > 0)
         {
             isReload = true;
 
@@ -177,7 +181,7 @@ public class GunController : MonoBehaviour
                 currentGun.currentBulletCount = currentGun.reloadBulletCount;
                 currentGun.carryBulletCount -= currentGun.reloadBulletCount;
             }
-            else 
+            else
             {
                 currentGun.currentBulletCount = currentGun.carryBulletCount;
                 currentGun.carryBulletCount = 0;
@@ -227,7 +231,7 @@ public class GunController : MonoBehaviour
 
     IEnumerator FineSightActivateCoroutine() // 정조준 활성화
     {
-        while(currentGun.transform.localPosition != currentGun.fineSightOriginPos)
+        while (currentGun.transform.localPosition != currentGun.fineSightOriginPos)
         {
             currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, currentGun.fineSightOriginPos, 0.2f);
             yield return null;
@@ -252,14 +256,14 @@ public class GunController : MonoBehaviour
             currentGun.transform.localPosition = originPos;
 
             // 반동 시작
-            while(currentGun.transform.localPosition.x <= currentGun.retroActionForce - 0.02f)
+            while (currentGun.transform.localPosition.x <= currentGun.retroActionForce - 0.02f)
             {
                 currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, recoilBack, 0.4f);
                 yield return null;
             }
 
             // 원위치
-            while(currentGun.transform.localPosition != originPos)
+            while (currentGun.transform.localPosition != originPos)
             {
                 currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, originPos, 0.1f);
                 yield return null;
@@ -287,7 +291,7 @@ public class GunController : MonoBehaviour
 
     public void CancelReload()//다른 행동 시 재장전에 걸리는 오류 해결
     {
-        if(isReload)
+        if (isReload)
         {
             StopAllCoroutines();
             isReload = false;
@@ -318,7 +322,7 @@ public class GunController : MonoBehaviour
 
         currentGun = _gun;
         WeaponManager.currentWeapon = currentGun.GetComponent<Transform>();
-        WeaponManager.currentWeaponAnim = currentGun.anim; 
+        WeaponManager.currentWeaponAnim = currentGun.anim;
         // 웨폰매니저에서 자동으로 애니메이션을 받아온다.
 
         currentGun.transform.localPosition = Vector3.zero;
