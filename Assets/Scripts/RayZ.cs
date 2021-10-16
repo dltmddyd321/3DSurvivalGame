@@ -13,7 +13,7 @@ public class RayZ : MonoBehaviour
     void Update()
     {
 
-        if(Input.GetKeyDown(KeyCode.G))
+        if(Input.GetKeyDown(KeyCode.G) && NeedCoin.isQuest == false)
         {
 
             RaycastHit hitInfo;
